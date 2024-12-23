@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Blog</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            margin: 20px;
+        }
+        .blog-post {
+            background-color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .blog-post h2 {
+            margin-top: 0;
+        }
+        .passcode-prompt {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            width: 100%;
+        }
+        .passcode-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        .passcode-container input {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .passcode-container button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .passcode-container button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="passcode-prompt" id="passcodePrompt">
+    <div class="passcode-container">
+        <h3>Please enter the passcode to enter the blog</h3>
+        <input type="password" id="passcodeInput" placeholder="Enter Passcode">
+        <button onclick="checkPasscode()">Submit</button>
+    </div>
+</div>
+
+<header>
+    <h1>Welcome to Our Blog (a template via ChatGpt)</h1>
+    <p>A space where we share our thoughts and experiences.</p>
+</header>
+
+<div class="content" id="content" style="display: none;">
+    <div class="blog-post">
+        <h2>Our First Post</h2>
+        <p>Welcome to the blog! This is where we'll share everything from daily thoughts to big life moments. Stay tuned!</p>
+    </div>
+
+    <div class="blog-post">
+        <h2>Our Journey Together</h2>
+        <p>In this post, we reflect on how we met, the adventures we've been on, and the amazing moments that have shaped our relationship.</p>
+    </div>
+
+    <div class="blog-post">
+        <h2>Life Updates</h2>
+        <p>Here's where we update our family and friends about what's going on in our lives right now — from travel to work to new hobbies!</p>
+    </div>
+</div>
+
+<script>
+    function checkPasscode() {
+        const passcode = document.getElementById("passcodeInput").value;
+        if (passcode === "") { // Replace "yourPasscodeHere" with your actual passcode
+            document.getElementById("passcodePrompt").style.display = "none";
+            document.getElementById("content").style.display = "block";
+        } else {
+            alert("Incorrect passcode. Please try again.");
+        }
+    }
+</script>
+
+</body>
+</html>

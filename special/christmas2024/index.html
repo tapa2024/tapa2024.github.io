@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taylor Christmas Counter - Login</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: white;
+      font-family: Arial, sans-serif;
+    }
+    #login, #app {
+      display: none;
+      text-align: center;
+    }
+    #login.active, #app.active {
+      display: block;
+    }
+    input[type="password"] {
+      padding: 10px;
+      font-size: 16px;
+      width: 200px;
+      margin-bottom: 20px;
+      border: 1px solid #333;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #555;
+    }
+    #text1 {
+      font-size: 36px;
+      color: rgb(181, 186, 10); /* Tiffany blue in RGB */
+      margin: 20px 0;
+    }
+    #text2 {
+      font-size: 24px;
+      color: rgb(181, 186, 10); /* Tiffany blue in RGB */
+      margin: 20px 0;
+    }
+    #image {
+      width: 300px; /* Adjust the size as needed */
+      height: auto;
+    }
+    #image.large {
+      width: 740px; /* Larger size for the image */
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Section -->
+  <div id="login" class="active">
+    <h1>Welcome, the passcode is...</h1>
+    <input type="password" id="passcode" placeholder="Enter passcode">
+    <br>
+    <button id="loginButton">Login</button>
+    <p id="error" style="color: red; display: none;">Incorrect passcode. Try again.</p>
+  </div>
+
+  <!-- Main App Section -->
+  <div id="app">
+    <img id="image" src="close_christ.png" alt="Image">
+    <div id="text1">POP TAYLOR</div>
+    <div id="text2">Count: 0</div>
+    <button id="reset">Reset Counter</button>
+    <audio id="clickSound" src="bab.mp3"></audio>
+    <audio id="christmasSong" src="song2024.mp3" loop></audio> <!-- Replace with your Christmas song file -->
+  </div>
+
+  <script>
+    // Passcode
+
+    // Login elements
+    const loginDiv = document.getElementById('login');
+    const appDiv = document.getElementById('app');
+    const loginButton = document.getElementById('loginButton');
+    const passcodeInput = document.getElementById('passcode');
+    const errorText = document.getElementById('error');
+
+    // // Handle login
+    // loginButton.addEventListener('click', () => {
+    //   const enteredPasscode = passcodeInput.value;
+    //   if (enteredPasscode === correctPasscode) {
+    //     loginDiv.classList.remove('active');
+    //     appDiv.classList.add('active');
+    //   } else {
+    //     errorText.style.display = 'block';
+    //   }
+    // });
+    // Handle login button click or Enter key press
+    const hashedPasscode = "7f38e14ef225e1eb96ad7c8689d064d377e05ed06828bfa203207497d1be7bf9";
+
+    function handleLogin() {
+      const enteredPasscode = passcodeInput.value;
+      const enteredHash = CryptoJS.SHA256(enteredPasscode).toString();
+      // print(enteredHash);
+      // console.log(enteredHash);
+      // console.log(hashedPasscode);
+      if (enteredHash === hashedPasscode) {
+        loginDiv.classList.remove('active');
+        appDiv.classList.add('active');
+      } else {
+        errorText.style.display = 'block';
+      }
+    }
+
+    // Focus on the passcode input box when the page loads
+    window.onload = function () {
+        document.getElementById("passcode").focus();
+    };
+
+    loginButton.addEventListener('click', handleLogin);
+    passcodeInput.addEventListener('keydown', (event) => {
+      if (event.key === "Enter") handleLogin();
+    });
+
+
+
+    // Initialize variables for the main app
+    const imgElement = document.getElementById('image');
+    const textElement1 = document.getElementById('text1');
+    const textElement2 = document.getElementById('text2');
+    const resetButton = document.getElementById('reset');
+    const clickSound = document.getElementById('clickSound');
+    const christmasSong = document.getElementById('christmasSong');
+    const images = ["close_christ.png", "open_christ.png"]; // Paths to images
+    let clickCount = 0;
+    let displayingAlternate = false;
+
+    // Update the display with the current count
+    function updateDisplay() {
+      if (clickCount === 12) {
+        imgElement.src = "christmas.jpg"; // Show the special image
+        imgElement.classList.add("large"); // Add the "large" class for the larger size
+        textElement1.innerHTML = "POP TAYLOR @ 12!";
+        textElement2.innerHTML = "謝謝妳讓我不再孤單，願我倆可以往我們努力的目標邁進，<br>每年都點12下，一下一個月！<br>Happy Christmas and Happy New Year!<br><br> Love, Patty";
+        clickSound.pause(); // Stop the regular click sound
+        christmasSong.play(); // Play the Christmas song
+      } else {
+        textElement1.innerHTML = "POP TAYLOR";
+        // textElement2.textContent = `Count: ${clickCount}`;
+        if (clickCount < 5){
+          textElement2.textContent = `Count: ${clickCount}, 點我`;
+        }
+        if (clickCount >= 5 && clickCount < 8){
+          textElement2.textContent = `Count: ${clickCount}, 再點我`;
+        }
+        if (clickCount >= 8){
+          textElement2.textContent = `Count: ${clickCount}, 繼續點！`;
+        }
+        if (clickCount >= 10){
+          textElement2.textContent = `Count: ${clickCount}, 快到了！`;
+        }
+        imgElement.src = displayingAlternate ? images[1] : images[0];
+        imgElement.classList.remove("large"); // Remove the "large" class if not Christmas image
+      }
+    }
+
+    // Handle image clicks
+    imgElement.addEventListener('click', () => {
+      if (clickCount < 10000000) {
+        clickCount++;
+        displayingAlternate = true;
+        updateDisplay();
+        clickSound.play(); // Play click sound
+        setTimeout(() => {
+          displayingAlternate = false;
+          updateDisplay();
+        }, 300); // Reset image after 300ms
+        localStorage.setItem('clickCount', clickCount); // Save count to local storage
+      }
+    });
+
+    // Handle reset button click
+    resetButton.addEventListener('click', () => {
+      clickCount = 0;
+      localStorage.setItem('clickCount', clickCount); // Reset local storage
+      christmasSong.pause(); // Stop the Christmas song
+      christmasSong.currentTime = 0; // Reset the song to the beginning
+      updateDisplay();
+    });
+
+    // Initial display update
+    updateDisplay();
+  </script>
+</body>
+</html>
